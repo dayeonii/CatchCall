@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:padding="24dp"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:text="AutoReply (Local)"
+        android:textSize="22sp"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/switch_test"
+        android:text="테스트 모드 (쿨다운 60초)"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btn_perm"
+        android:text="권한 요청 (전화/문자/통화기록)"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btn_battery"
+        android:text="배터리 최적화 설정 열기"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tip"
+        android:text="※ 부재중/매너콜 자동문자. 같은 번호는 쿨다운 내 재발송 차단."
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"/>
+</LinearLayout>
