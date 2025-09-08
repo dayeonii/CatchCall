@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 쿨타임 단위 변경 항목 -->
+<resources>
+    <string-array name="cooldown_units">
+        <item>분</item>
+        <item>시간</item>
+        <item>일</item>
+    </string-array>
+</resources>

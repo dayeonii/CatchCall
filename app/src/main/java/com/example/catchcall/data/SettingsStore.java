@@ -11,24 +11,87 @@ public class SettingsStore {
         this.pref = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
     }
 
-    public String getTemplate() {
-        String def = "지금은 통화가 어렵습니다. 확인 후 연락드릴게요. https://comwel.vercel.app";
-        return pref.getString("template", def);
+    // 앱 기능 자체 활성화/비활성화 토글
+    public boolean isFeatureEnabled() {
+        return pref.getBoolean("feature_enabled", true); // 기본은 켜짐
+    }
+    public void setFeatureEnabled(boolean enabled) {
+        pref.edit().putBoolean("feature_enabled", enabled).apply();
     }
 
-    public void setTemplate(String v) {
-        pref.edit().putString("template", v).apply();
+    // --- 기본 템플릿 ---
+    private String getDefaultMissedTemplate() {
+        return "[근로복지공단 퇴직연금 안내]\n" +
+                "\n" +
+                "안녕하세요. 근로복지공단 퇴직연금 담당 윤용현 전문관입니다.  \n" +
+                "현재는 다른 민원인과 통화 중이라 전화를 바로 받지 못해 죄송합니다.  \n" +
+                "\n" +
+                "혹시 도움이 필요하시다면, 모바일 안내 가이드를 참고해 주세요.  \n" +
+                "\uD83D\uDC49 comwel.vercel.app  \n" +
+                "(※ 업무 처리 자체는 공단 홈페이지에서 하실 수 있으며, 위 링크는 이해를 돕기 위한 안내 자료입니다.)  \n" +
+                "\n" +
+                "이미 업무를 마치셨다면 ‘완료’라고 문자 회신해 주시면 큰 도움이 됩니다.  \n" +
+                "\n" +
+                "직접 통화를 원하신다면 조금만 기다려주세요^^통화가 끝나는 대로 꼭 다시 연락드리겠습니다.  \n" +
+                "항상 소중한 시간을 내어주셔서 감사드립니다.";
     }
 
+    private String getDefaultMannerTemplate() {
+        return "[근로복지공단 퇴직연금 안내]\n" +
+                "\n" +
+                "안녕하세요. 근로복지공단 퇴직연금 담당 윤용현 전문관입니다.  \n" +
+                "현재는 다른 민원인과 통화 중이라 전화를 바로 받지 못해 죄송합니다.  \n" +
+                "\n" +
+                "혹시 도움이 필요하시다면, 모바일 안내 가이드를 참고해 주세요.  \n" +
+                "\uD83D\uDC49 comwel.vercel.app  \n" +
+                "(※ 업무 처리 자체는 공단 홈페이지에서 하실 수 있으며, 위 링크는 이해를 돕기 위한 안내 자료입니다.)  \n" +
+                "\n" +
+                "이미 업무를 마치셨다면 ‘완료’라고 문자 회신해 주시면 큰 도움이 됩니다.  \n" +
+                "\n" +
+                "직접 통화를 원하신다면 조금만 기다려주세요^^통화가 끝나는 대로 꼭 다시 연락드리겠습니다.  \n" +
+                "항상 소중한 시간을 내어주셔서 감사드립니다.";
+    }
+
+    // --- 템플릿 저장/로드 ---
+    public String getMissedTemplate() {
+        String v = pref.getString("template_missed", null);
+        if (v == null || v.trim().isEmpty()) return getDefaultMissedTemplate();
+        return v;
+    }
+    public void setMissedTemplate(String v) {
+        if (v == null || v.trim().isEmpty()) {
+            pref.edit().remove("template_missed").apply();
+        } else {
+            pref.edit().putString("template_missed", v).apply();
+        }
+    }
+
+    public String getMannerTemplate() {
+        String v = pref.getString("template_manner", null);
+        if (v == null || v.trim().isEmpty()) return getDefaultMannerTemplate();
+        return v;
+    }
+    public void setMannerTemplate(String v) {
+        if (v == null || v.trim().isEmpty()) {
+            pref.edit().remove("template_manner").apply();
+        } else {
+            pref.edit().putString("template_manner", v).apply();
+        }
+    }
+
+    // --- 쿨타임 ---
+    // 기본값을 5초로 변경 (기존: 30일 = 2,592,000초)
     public long getCooldownSeconds() {
-        return pref.getLong("cooldown_sec", 2_592_000L); // 30일(초)
+        return pref.getLong("cooldown_sec", 5L); // 기본 5초
     }
 
     public void setCooldownSeconds(long sec) {
+        if (sec < 0) sec = 0;
         pref.edit().putLong("cooldown_sec", sec).apply();
     }
 
+    // 테스트 모드: 5초로 고정/원래값(30일) 복귀
     public void setDebugTestMode(boolean on) {
-        setCooldownSeconds(on ? 60L : 2_592_000L);
+        setCooldownSeconds(on ? 5L : 2_592_000L);
     }
 }

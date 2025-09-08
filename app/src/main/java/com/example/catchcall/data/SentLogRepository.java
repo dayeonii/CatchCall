@@ -21,4 +21,14 @@ public class SentLogRepository {
     public void setLastSentAt(String num, long ts) {
         pref.edit().putLong(key(num), ts).apply();
     }
+
+    // 수정
+    public long getLastSent(String num) {
+        Long v = getLastSentAt(num);
+        return v == null ? 0L : v;
+    }
+
+    public void saveLastSent(String num, long ts) {
+        setLastSentAt(num, ts);
+    }
 }
