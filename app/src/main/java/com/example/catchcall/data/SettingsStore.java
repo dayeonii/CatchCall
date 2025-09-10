@@ -79,10 +79,24 @@ public class SettingsStore {
         }
     }
 
+    // --- 테스트 모드 (최우선) ---
+    public boolean isTestMode() {
+        return pref.getBoolean("test_mode", false);
+    }
+    public void setTestMode(boolean on) {
+        pref.edit().putBoolean("test_mode", on).apply();
+    }
+
+    // 호환용 (기존 메서드 유지): 내부적으로 test_mode 토글로 위임
+    public void setDebugTestMode(boolean on) {
+        setTestMode(on);
+    }
+
     // --- 쿨타임 ---
-    // 기본값을 5초로 변경 (기존: 30일 = 2,592,000초)
+    // 테스트 모드일 땐 무조건 0초(최우선). 아니면 사용자 설정 값(기본 5초).
     public long getCooldownSeconds() {
-        return pref.getLong("cooldown_sec", 5L); // 기본 5초
+        if (isTestMode()) return 0L;                // 테스트 모드 최우선
+        return pref.getLong("cooldown_sec", 5L);    // 기본 5초
     }
 
     public void setCooldownSeconds(long sec) {
@@ -90,8 +104,8 @@ public class SettingsStore {
         pref.edit().putLong("cooldown_sec", sec).apply();
     }
 
-    // 테스트 모드: 5초로 고정/원래값(30일) 복귀
-    public void setDebugTestMode(boolean on) {
-        setCooldownSeconds(on ? 5L : 2_592_000L);
+    // (과거 실험용) 함께 추가했던 병합 윈도우 — 현재 정책에서는 미사용
+    public long getCoalesceSeconds() {
+        return pref.getLong("coalesce_sec", 8L);
     }
 }

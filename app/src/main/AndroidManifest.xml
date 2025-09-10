@@ -2,17 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 필수 권한 (알림 읽기, 문자 보내기 등)-->
+    <!-- 단말에 전화 모듈이 없을 수도 있으니 optional -->
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
 
+    <!-- 권한 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+
+    <!-- (선택) MMS 수신/푸시 수신 필요 시: 송신만이면 없어도 동작하지만, 호환성 위해 권장 -->
+    <uses-permission android:name="android.permission.RECEIVE_MMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH"/>
 
     <application
         android:allowBackup="true"
@@ -24,7 +29,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CatchCall">
 
-        <!-- 런처 액티비티 추가 -->
+        <!-- FileProvider: MMS 전송 시 첨부 URI 공유용 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- 런처 액티비티 -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -43,17 +59,15 @@
             </intent-filter>
         </receiver>
 
-        <!-- 전화 상태 리시버 2 : 매너콜 감지 -->
+        <!-- 문자 수신 리시버 : 매너콜 키워드 감지 -->
         <receiver
             android:name=".receiver.SmsReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
 
     </application>
-
-
-
 </manifest>

@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- 권한/배터리 버튼 -->
+        <!-- 권한/배터리/기본 문자앱 버튼 -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -38,6 +38,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_default_sms"
+                android:text="기본 문자앱 설정"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <!-- 기능 활성화 스위치 -->
@@ -52,7 +60,7 @@
         <!-- 테스트 모드 스위치 -->
         <Switch
             android:id="@+id/switch_test"
-            android:text="테스트 모드 (쿨타임 60초)"
+            android:text="테스트 모드 (쿨타임 0초, 최우선)"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"/>
@@ -154,7 +162,7 @@
         <!-- 안내문 -->
         <TextView
             android:id="@+id/tv_hint"
-            android:text="※ 같은 번호는 쿨타임 내 재발송되지 않습니다."
+            android:text="※ 테스트 모드에서는 쿨타임이 0초로 고정됩니다. 기본 문자앱으로 설정 시 장문도 한 통(MMS)으로 전송됩니다."
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
