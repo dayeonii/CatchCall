@@ -47,14 +47,14 @@ public class MissedCallReceiver extends BroadcastReceiver {
 
             boolean dispatched = false;
 
-            // 정상 경로: 직전에 RINGING 잡힘
+            // 1) 정상 경로: 직전에 RINGING 잡힘
             if (wasRinging && lastIncoming != null) {
                 Log.d(TAG, "[MissedCallReceiver] MISSED detected. Dispatch to UseCase with number=" + lastIncoming);
                 new AutoReplyUseCase(context).onMissedCall(lastIncoming);
                 dispatched = true;
             }
 
-            // Fallback: RINGING 놓쳤거나 번호 null
+            // 2) 보조 경로(Fallback): 정상 경로에서 못 잡았을 때만 동작
             if (!dispatched) {
                 boolean hasReadCallLog = ContextCompat.checkSelfPermission(
                         context, android.Manifest.permission.READ_CALL_LOG
@@ -97,6 +97,7 @@ public class MissedCallReceiver extends BroadcastReceiver {
                 }
             }
 
+            // 3) 상태 초기화
             wasRinging = false;
             lastIncoming = null;
             Log.d(TAG, "[MissedCallReceiver] state cleared (wasRinging=false, lastIncoming=null)");

@@ -19,33 +19,33 @@
 
         <!-- 권한/배터리/기본 문자앱 버튼 -->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_perm"
-                android:text="권한 요청"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="권한 요청" />
 
             <Button
                 android:id="@+id/btn_battery"
-                android:text="배터리 최적화"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="배터리 최적화" />
 
             <Button
                 android:id="@+id/btn_default_sms"
-                android:text="기본 문자앱 설정"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="기본 문자앱 설정" />
         </LinearLayout>
 
         <!-- 기능 활성화 스위치 -->
